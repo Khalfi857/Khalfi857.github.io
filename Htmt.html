@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> ChatBuddy </title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 10vh;
+            max-width: 1366rem;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: rgb(195, 195, 195);
+        }
+
+        nav .logo {
+            display: flex;
+            font-size: 2.25rem;
+            align-items: center;
+        }
+
+        nav .logo img {
+            height: 3rem;
+            width: 3rem;
+        }
+
+        nav .nav-items{
+            display: flex;
+            list-style-type: none;
+        }
+
+        nav .nav-items .nav-item{
+            padding: 0.1rem;
+        }
+
+        nav .nav-link{
+            text-decoration: none;
+            color: #4e547e;
+            font-size: 1.4rem;
+        }
+
+        nav .nav-link:hover{
+            color: #6e0aef;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        #chat-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+            height: 100vh;
+            flex-direction: column;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(255, 120, 120, 0.3);
+        }
+
+        .one {
+            max-width: 1000px;
+            width: 1000px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+            background-color: #f5f5f5;
+            text-align: center;
+            margin-top: 30px;
+            overflow-y: scroll;
+            max-height: 500px;
+            height: 500px;
+        }
+
+        .user-message {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .user-icon {
+            margin-right: 10px;
+        }
+
+        .user-icon img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .message-text.user {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            padding: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .chatgpt-message {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .chatgpt-icon {
+            margin-left: 10px;
+        }
+
+        .chatgpt-icon img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .message-text.chatgpt {
+            background-color: #f7f7f7;
+            color: #000;
+            border-radius: 5px;
+            padding: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .tow {
+            max-width: 1000px;
+            width: 1000px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+            background-color: #f5f5f5;
+            text-align: center;
+            margin-top: 30px;
+            
+        }
+        
+        .tow button:hover {
+            background-color: #0056b3; /* تغيير لون الخلفية عند مرور المؤشر */
+            transform: scale(1.05); /* تكبير حجم الزر عند مرور المؤشر */
+            transition: background-color 0.3s, transform 0.3s; /* تحديد سرعة التحولات */
+        }
+
+        .tow input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .tow button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* إضافة تنسيق لرسالة الكتابة */
+        .chatgpt-busy {
+            text-align: center;
+            font-style: italic;
+            color: #888;
+            padding: 10px;
+        }
+
+        @media screen and (max-width: 1200px) {
+            nav {
+                flex-direction: column;
+                text-align: center;
+                height: auto;
+            }
+
+            nav .logo {
+                margin-bottom: 20px;
+            }
+
+            nav .nav-items {
+                flex-direction: column;
+            }
+
+            nav .nav-items .nav-item {
+                padding: 0.5rem 0;
+            }
+
+            .one {
+                max-width: 100%;
+                width: 100%;
+                height: 500px;
+                margin-top: 20px;
+            }
+
+            .tow {
+                max-width: 100%;
+                width: 100%;
+                margin-top: 20px;
+            }
+    
+            .tow input[type="text"] {
+                width: 70%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="./robot.png" alt="ChatGPT">
+            <h4> ChatBuddy </h4>
+        </div>
+        <ul class="nav-items">
+            <li class="nav-item">
+                <a href="#" class="nav-link">help</a>
+            </li>
+        </ul>
+    </nav>
+    <div id="chat-container">
+        <div class="one" id="chat-messages">
+            <!-- الرسائل ستتم إضافتها هنا -->
+        </div>
+        <div class="tow">
+            <input type="text" id="message-input" placeholder="Write your message here">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const chatMessages = document.getElementById('chat-messages');
+
+        // إضافة رسالة تنبيهية للمستخدم بأن ChatGPT في وضع الكتابة
+        function showChatGPTTyping() {
+            const chatGPTTypingMessage = document.createElement('div');
+            chatGPTTypingMessage.classList.add('chatgpt-busy');
+            chatGPTTypingMessage.innerText = 'ChatGPT is typing...';
+            chatMessages.appendChild(chatGPTTypingMessage);
+            // التمرير إلى أسفل لعرض الرسالة الجديدة
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // إزالة رسالة الكتابة عندما يتم استلام الرد من ChatGPT
+        function hideChatGPTTyping() {
+            const chatGPTBusyMessage = document.querySelector('.chatgpt-busy');
+            if (chatGPTBusyMessage) {
+                chatGPTBusyMessage.remove();
+            }
+        }
+
+        sendButton.addEventListener('click', () => {
+            showChatGPTTyping(); // إظهار رسالة الكتابة قبل استلام الرد
+
+            let body = {
+                "model": "gpt-3.5-turbo",
+                "messages": [{
+                    "role": "user",
+                    "content": messageInput.value
+                }],
+                "temperature": 0.7
+            }
+
+            let headers = {
+                Authorization: "Bearer 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",
+            }
+
+            axios
+                .post("https://api.openai.com/v1/chat/completions", body, {
+                    headers: headers,
+                })
+                .then((response) => {
+                    let reply = response.data.choices[0].message.content;
+                    const message = messageInput.value;
+
+                    // إضافة رسالة المستخدم مع الأيقونة
+                    const userMessage = document.createElement('div');
+                    userMessage.classList.add('user-message');
+                    userMessage.innerHTML = `
+                        <div class="user-icon">
+                            <img src="user-icon.png" alt="User Icon">
+                        </div>
+                        <div class="message-text user">
+                            ${message}
+                        </div>
+                    `;
+
+                    // إضافة رسالة ChatGPT مع الأيقونة
+                    const chatGptMessage = document.createElement('div');
+                    chatGptMessage.classList.add('chatgpt-message');
+                    chatGptMessage.innerHTML = `
+                        <div class="chatgpt-icon">
+                            <img src="chatgpt-icon.png" alt="ChatGPT Icon">
+                        </div>
+                        <div class="message-text chatgpt">
+                            ${reply}
+                        </div>
+                    `;
+
+                    // إضافة الرسالتين إلى منطقة الرسائل
+                    chatMessages.appendChild(userMessage);
+                    chatMessages.appendChild(chatGptMessage);
+
+                    hideChatGPTTyping(); // إزالة رسالة الكتابة بعد الاستجابة
+                    messageInput.value = '';
+
+                    // التمرير إلى أسفل لعرض الرسائل الجديدة
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                });
+        });
+    </script>
+</body>
+</html>
